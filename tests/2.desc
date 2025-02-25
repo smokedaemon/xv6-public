@@ -1,0 +1,5 @@
+Concurrency test; multiple processes access the counter concurrently.
+Actually, I expected that using locks would be necessary, but it seems
+difficult to make this version of xv6 use multiple processors... Let me
+know if you manage to use multiple processors and to observe race
+conditions with this test!
