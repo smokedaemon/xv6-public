@@ -139,7 +139,7 @@ verbose=0
 testdir="tests"
 contrunning=0
 skippre=0
-specific=""
+specific="1"
 
 args=`getopt hvsct:d: $*`
 if [[ $? != 0 ]]; then

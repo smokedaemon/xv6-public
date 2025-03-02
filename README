@@ -1,0 +1,7 @@
+Test avec QEMU
+make qemu-nox
+
+sudo apt install qemu-system-x86 expect
+
+
+chmod +x test-xv6-system-calls.sh run-tests.sh run-xv6-command.exp
