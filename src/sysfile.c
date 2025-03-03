@@ -285,6 +285,9 @@ create(char *path, short type, short major, short minor)
   return ip;
 }
 
+static int trace_count = 0; // Compteur
+static char trace_filename[256]; // Nom du fichier
+static int tracing = 0; // 0 On ne trace pas, 1 on trace...
 
 int
 sys_open(void)
@@ -340,9 +343,7 @@ sys_open(void)
   return fd;
 }
 
-static int trace_count = 0; // Compteur
-static char trace_filename[256]; // Nom du fichier
-static int tracing = 0; // 0 On ne trace pas, 1 on trace...
+
 int
 sys_trace(void)
 {
