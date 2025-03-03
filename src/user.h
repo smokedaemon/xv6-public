@@ -38,3 +38,6 @@ void* malloc(uint);
 void free(void*);
 int atoi(const char*);
 int getreadcount(void);
+// PROTOTYPE
+int trace(const char*);
+int gettracecount(void);

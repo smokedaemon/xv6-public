@@ -285,6 +285,7 @@ create(char *path, short type, short major, short minor)
   return ip;
 }
 
+
 int
 sys_open(void)
 {
@@ -295,6 +296,10 @@ sys_open(void)
 
   if(argstr(0, &path) < 0 || argint(1, &omode) < 0)
     return -1;
+
+  // Vérification si le fichier correspond au fichier tracé...
+  if(tracing && strncmp(path, trace_filename, sizeof(trace_filename)) == 0)
+    trace_count++;
 
   begin_op();
 
@@ -333,6 +338,36 @@ sys_open(void)
   f->readable = !(omode & O_WRONLY);
   f->writable = (omode & O_WRONLY) || (omode & O_RDWR);
   return fd;
+}
+
+static int trace_count = 0; // Compteur
+static char trace_filename[256]; // Nom du fichier
+static int tracing = 0; // 0 On ne trace pas, 1 on trace...
+int
+sys_trace(void)
+{
+  char *pathname;
+  
+  if(argstr(0, &pathname) < 0)
+    return -1;
+    
+  // Réinitialiser le compteur 
+  trace_count = 0;
+  
+  // Copier le nom du fichier à tracer
+  strncpy(trace_filename, pathname, sizeof(trace_filename)-1);
+  trace_filename[sizeof(trace_filename)-1] = '\0';
+  
+  // Activer le traçage
+  tracing = 1;
+  
+  return 0;
+}
+
+int
+sys_gettracecount(void)
+{
+  return trace_count;
 }
 
 int
