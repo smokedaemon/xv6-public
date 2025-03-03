@@ -14,7 +14,7 @@ set timeout 300
 
 # build and launch xv6 on qemu
 spawn make [lindex $argv 0] -f [lindex $argv 1] qemu-nox
-#spawn make -C src -f Makefile.test qemu-nox
+# spawn make -C src -f Makefile.test qemu-nox
 
 trap {
     shutdown

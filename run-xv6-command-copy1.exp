@@ -1,0 +1,45 @@
+#! /usr/bin/env expect
+
+proc shutdown {} {
+    send "\x01"
+    send "x"
+    expect eof
+}
+
+set timeout 300
+
+# Vérification des arguments
+if {[llength $argv] < 3} {
+    puts "Usage: $argv0 <target> <makefile> <command>"
+    exit 1
+}
+
+# Capture des arguments
+set target [lindex $argv 0]
+set makefile [lindex $argv 1]
+set command [lindex $argv 2]
+
+# Exécution de la commande make avec gestion d'erreur
+if {[catch {spawn make $target -f $makefile qemu-nox} err]} {
+    puts "Error spawning make: $err"
+    exit 1
+}
+
+expect {
+    timeout { puts "Timeout waiting for xv6 to start"; exit 1 }
+    "init: starting sh\r"
+}
+
+expect {
+    timeout { puts "Timeout waiting for shell prompt"; exit 1 }
+    "$ "
+}
+
+send "$command\r"
+
+expect {
+    timeout { puts "Timeout waiting for command completion"; exit 1 }
+    "@ "
+}
+
+shutdown
